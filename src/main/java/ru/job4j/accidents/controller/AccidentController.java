@@ -44,16 +44,11 @@ public class AccidentController {
 
     @PostMapping("/update")
     public String update(@ModelAttribute Accident accident, Model model) {
-        try {
-            var isUpdated = accidents.update(accident);
-            if (!isUpdated) {
-                model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
-                return "errors/404";
-            }
-            return "redirect:/accidents";
-        } catch (Exception exception) {
-            model.addAttribute("message", exception.getMessage());
+        var isUpdated = accidents.update(accident);
+        if (!isUpdated) {
+            model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
             return "errors/404";
         }
+        return "redirect:/accidents";
     }
 }

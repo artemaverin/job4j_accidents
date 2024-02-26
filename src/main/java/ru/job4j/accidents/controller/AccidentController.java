@@ -51,4 +51,11 @@ public class AccidentController {
         }
         return "redirect:/accidents";
     }
+
+    @GetMapping("/formUpdateAccident")
+    public String update(@RequestParam("id") int id, Model model) {
+        model.addAttribute("accident", accidents.findById(id).get());
+        return "accidents/update";
+    }
+
 }

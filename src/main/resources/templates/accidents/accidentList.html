@@ -24,7 +24,9 @@
                     <th scope="col">Краткое наименование</th>
                     <th scope="col">Описание</th>
                     <th scope="col">Адрес</th>
+                    <th scope="col">Тип</th>
                     <th scope="col">Править</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -33,6 +35,7 @@
                     <td th:text="${accident.name}"></td>
                     <td th:text="${accident.text}"></td>
                     <td th:text="${accident.address}"></td>
+                    <td th:text="${accident.type.name}"></td>
                     <td> <a th:text="Изменить" th:href="@{/accidents/{accidentId}(accidentId=${accident.id})}"></a></td>
                 </tr>
                 </tbody>

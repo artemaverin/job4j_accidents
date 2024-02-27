@@ -63,7 +63,12 @@ public class AccidentController {
 
     @GetMapping("/formUpdateAccident")
     public String update(@RequestParam("id") int id, Model model) {
-        model.addAttribute("accident", accidents.findById(id).get());
+        var accidentOptional = accidents.findById(id);
+        if (accidentOptional.isEmpty()) {
+            model.addAttribute("message", "Нарушения с указанным идентификатором не найдено");
+            return "errors/404";
+        }
+        model.addAttribute("accident", accidentOptional.get());
         model.addAttribute("types", types.findAll().values());
         return "accidents/update";
     }

@@ -30,32 +30,40 @@ public class AccidentController {
             model.addAttribute("message", "Нарушения с указанным идентификатором не найдено");
             return "errors/404";
         }
-        model.addAttribute("types", types.findAll().values());
+        model.addAttribute("types", types.findAll());
         model.addAttribute("accident", accidentOptional.get());
         return "accidents/editAccident";
     }
 
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
-        model.addAttribute("types", types.findAll().values());
+        model.addAttribute("types", types.findAll());
         return "accidents/createAccident";
     }
 
     @PostMapping("/saveAccident")
-    public String save(@ModelAttribute Accident accident) {
-        var accidentType = types.findAll().get(accident.getType().getId());
-        accident.setType(accidentType);
+    public String save(@ModelAttribute Accident accident, Model model) {
+        var accidentTypeOptional = types.findById(accident.getType().getId());
+        if (accidentTypeOptional.isEmpty()) {
+            model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
+            return "errors/404";
+        }
+        accident.setType(accidentTypeOptional.get());
         accidents.create(accident);
         return "redirect:/index";
     }
 
     @PostMapping("/update")
     public String update(@ModelAttribute Accident accident, Model model) {
-        var accidentType = types.findAll().get(accident.getType().getId());
-        accident.setType(accidentType);
+        var accidentTypeOptional = types.findById(accident.getType().getId());
+        if (accidentTypeOptional.isEmpty()) {
+            model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
+            return "errors/404";
+        }
+        accident.setType(accidentTypeOptional.get());
         var isUpdated = accidents.update(accident);
         if (!isUpdated) {
-            model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
+            model.addAttribute("message", "Не удалось обновить нарушение");
             return "errors/404";
         }
         return "redirect:/accidents";
@@ -69,7 +77,7 @@ public class AccidentController {
             return "errors/404";
         }
         model.addAttribute("accident", accidentOptional.get());
-        model.addAttribute("types", types.findAll().values());
+        model.addAttribute("types", types.findAll());
         return "accidents/update";
     }
 }

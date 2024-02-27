@@ -4,7 +4,9 @@ import ru.job4j.accidents.model.AccidentType;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 public interface AccidentTypeService {
-    Map<Integer, AccidentType> findAll();
+    Collection<AccidentType> findAll();
+    Optional<AccidentType> findById(int id);
 }

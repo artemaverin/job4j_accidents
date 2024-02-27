@@ -4,10 +4,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
+import ru.job4j.accidents.model.Rule;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -15,16 +14,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 @NoArgsConstructor
 public class AccidentMem implements AccidentRepository {
 
+    private Set<Rule> rules = new HashSet<>() {
+        {
+            add(new Rule(1, "Статья. 1"));
+        }
+    };
+
     private Map<Integer, Accident> accidents = new ConcurrentHashMap<>() {
         {
             put(1, new Accident(1, "Неправильная парковка", "Парковка на газоне", "Ленина 24",
-                    new AccidentType(1, "Две машины")));
+                    new AccidentType(1, "Две машины"), rules));
             put(2, new Accident(2, "Превышение скорости", "Превышена скорость в черте города",
-                    "Строителей 5", new AccidentType(1, "Две машины")));
+                    "Строителей 5", new AccidentType(1, "Две машины"), rules));
             put(3, new Accident(3, "Езда без прав", "Отсутствие документов", "Металлургов 15",
-                    new AccidentType(1, "Две машины")));
+                    new AccidentType(1, "Две машины"), rules));
             put(4, new Accident(4, "Неисправность световых приборов", "Не работают дневные ходовые огни",
-                    "Проспект Мира 8", new AccidentType(1, "Две машины")));
+                    "Проспект Мира 8", new AccidentType(1, "Две машины"), rules));
         }
     };
 
@@ -50,7 +55,8 @@ public class AccidentMem implements AccidentRepository {
     public boolean update(Accident accident) {
         return accidents.computeIfPresent(accident.getId(), (id, oldAccident) -> {
             return new Accident(
-                    oldAccident.getId(), accident.getName(), accident.getText(), accident.getAddress(), accident.getType()
+                    oldAccident.getId(), accident.getName(), accident.getText(), accident.getAddress(),
+                    accident.getType(), accident.getRules()
             );
         }) != null;
     }

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.service.AccidentService;
 import ru.job4j.accidents.service.AccidentTypeService;
+import ru.job4j.accidents.service.RuleService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @AllArgsConstructor
@@ -15,6 +18,8 @@ public class AccidentController {
     private final AccidentService accidents;
 
     private AccidentTypeService types;
+
+    private RuleService rules;
 
     @GetMapping()
     public String getIndexPage(Model model) {
@@ -32,30 +37,38 @@ public class AccidentController {
         }
         model.addAttribute("types", types.findAll());
         model.addAttribute("accident", accidentOptional.get());
+        model.addAttribute("rules", rules.findAll());
         return "accidents/editAccident";
     }
 
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
         model.addAttribute("types", types.findAll());
+        model.addAttribute("rules", rules.findAll());
         return "accidents/createAccident";
     }
 
     @PostMapping("/saveAccident")
-    public String save(@ModelAttribute Accident accident, Model model) {
+    public String save(@ModelAttribute Accident accident, Model model, HttpServletRequest req) {
         var accidentTypeOptional = types.findById(accident.getType().getId());
         if (accidentTypeOptional.isEmpty()) {
             model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
             return "errors/404";
         }
+        String[] ids = req.getParameterValues("rIds");
+        var rulesSet = rules.findByIds(ids);
         accident.setType(accidentTypeOptional.get());
+        accident.setRules(rulesSet);
         accidents.create(accident);
         return "redirect:/index";
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Accident accident, Model model) {
+    public String update(@ModelAttribute Accident accident, Model model, HttpServletRequest req) {
         var accidentTypeOptional = types.findById(accident.getType().getId());
+        String[] ids = req.getParameterValues("rIds");
+        var rulesSet = rules.findByIds(ids);
+        accident.setRules(rulesSet);
         if (accidentTypeOptional.isEmpty()) {
             model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
             return "errors/404";
@@ -78,6 +91,7 @@ public class AccidentController {
         }
         model.addAttribute("accident", accidentOptional.get());
         model.addAttribute("types", types.findAll());
+        model.addAttribute("rules", rules.findAll());
         return "accidents/update";
     }
 }

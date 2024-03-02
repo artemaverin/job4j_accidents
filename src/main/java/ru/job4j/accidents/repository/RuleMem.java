@@ -2,8 +2,6 @@ package ru.job4j.accidents.repository;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.model.Rule;
 
 import java.util.*;
@@ -26,10 +24,10 @@ public class RuleMem implements RuleRepository {
     }
 
     @Override
-    public Set<Rule> findByIds(String[] ids) {
+    public Set<Rule> findByIds(List<Integer> rIds) {
         Set<Rule> ruleIds = new HashSet<>();
-        for (String s:  ids) {
-            ruleIds.add(rules.get(Integer.parseInt(s)));
+        for (Integer s:  rIds) {
+            ruleIds.add(rules.get(s));
         }
         return ruleIds;
     }

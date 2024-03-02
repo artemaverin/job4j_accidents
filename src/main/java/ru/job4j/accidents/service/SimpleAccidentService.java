@@ -12,25 +12,25 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SimpleAccidentService implements AccidentService {
 
-    private AccidentRepository accidentRepository;
+    private AccidentRepository accidentJdbcTemplate;
 
     @Override
     public Accident create(Accident accident) {
-        return accidentRepository.create(accident);
+        return accidentJdbcTemplate.create(accident);
     }
 
     @Override
     public Optional<Accident> findById(int id) {
-        return accidentRepository.findById(id);
+        return accidentJdbcTemplate.findById(id);
     }
 
     @Override
     public Collection<Accident> findAll() {
-        return accidentRepository.findAll();
+        return accidentJdbcTemplate.findAll();
     }
 
     @Override
     public boolean update(Accident accident) {
-        return accidentRepository.update(accident);
+        return accidentJdbcTemplate.update(accident);
     }
 }

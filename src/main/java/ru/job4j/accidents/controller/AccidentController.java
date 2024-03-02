@@ -10,6 +10,7 @@ import ru.job4j.accidents.service.AccidentTypeService;
 import ru.job4j.accidents.service.RuleService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -24,7 +25,10 @@ public class AccidentController {
     @GetMapping()
     public String getIndexPage(Model model) {
         model.addAttribute("class_active", "index");
+        var a = accidents.findAll();
         model.addAttribute("accidents", accidents.findAll());
+        model.addAttribute("types", types.findAll());
+        model.addAttribute("rules", rules.findAll());
         return "accidents/accidentList";
     }
 
@@ -49,14 +53,14 @@ public class AccidentController {
     }
 
     @PostMapping("/saveAccident")
-    public String save(@ModelAttribute Accident accident, Model model, HttpServletRequest req) {
+    public String save(@ModelAttribute Accident accident, Model model, HttpServletRequest req,
+                       @RequestParam List<Integer> rIds) {
         var accidentTypeOptional = types.findById(accident.getType().getId());
         if (accidentTypeOptional.isEmpty()) {
             model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
             return "errors/404";
         }
-        String[] ids = req.getParameterValues("rIds");
-        var rulesSet = rules.findByIds(ids);
+        var rulesSet = rules.findByIds(rIds);
         accident.setType(accidentTypeOptional.get());
         accident.setRules(rulesSet);
         accidents.create(accident);
@@ -64,10 +68,10 @@ public class AccidentController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Accident accident, Model model, HttpServletRequest req) {
+    public String update(@ModelAttribute Accident accident, Model model, HttpServletRequest req,
+                         @RequestParam List<Integer> rIds) {
         var accidentTypeOptional = types.findById(accident.getType().getId());
-        String[] ids = req.getParameterValues("rIds");
-        var rulesSet = rules.findByIds(ids);
+        var rulesSet = rules.findByIds(rIds);
         accident.setRules(rulesSet);
         if (accidentTypeOptional.isEmpty()) {
             model.addAttribute("message", "Резюме с указанным идентификатором не найдено");

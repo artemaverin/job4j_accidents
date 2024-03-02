@@ -6,6 +6,7 @@ import ru.job4j.accidents.model.Rule;
 import ru.job4j.accidents.repository.RuleRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -20,7 +21,7 @@ public class SimpleRuleService implements RuleService {
     }
 
     @Override
-    public Set<Rule> findByIds(String[] ids) {
-        return ruleRepository.findByIds(ids);
+    public Set<Rule> findByIds(List<Integer> rIds) {
+        return ruleRepository.findByIds(rIds);
     }
 }

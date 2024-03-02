@@ -1,0 +1,1 @@
+INSERT INTO accidents (text, position) VALUES ('urgently', 1);

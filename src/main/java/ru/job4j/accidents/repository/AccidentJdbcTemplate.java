@@ -17,7 +17,6 @@ import java.util.*;
 
 @Repository
 @AllArgsConstructor
-@Primary
 public class AccidentJdbcTemplate implements AccidentRepository {
 
     private final JdbcTemplate jdbc;

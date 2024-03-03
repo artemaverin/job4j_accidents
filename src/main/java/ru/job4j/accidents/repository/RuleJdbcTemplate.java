@@ -15,7 +15,6 @@ import java.util.*;
 
 @Repository
 @AllArgsConstructor
-@Primary
 public class RuleJdbcTemplate implements RuleRepository {
 
     private final JdbcTemplate jdbc;

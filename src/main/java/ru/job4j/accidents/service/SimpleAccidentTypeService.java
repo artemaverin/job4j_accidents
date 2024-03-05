@@ -2,8 +2,8 @@ package ru.job4j.accidents.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.job4j.accidents.repository.AccidentTypeHbmCommand;
 import ru.job4j.accidents.repository.AccidentTypeHibernate;
-import ru.job4j.accidents.repository.AccidentTypeRepository;
 import ru.job4j.accidents.model.AccidentType;
 
 import java.util.Collection;
@@ -13,7 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SimpleAccidentTypeService implements AccidentTypeService {
 
-    private AccidentTypeHibernate accidentTypeRepository;
+    private AccidentTypeHbmCommand accidentTypeRepository;
 
     @Override
     public Collection<AccidentType> findAll() {

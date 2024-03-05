@@ -27,4 +27,5 @@ public class SimpleRuleService implements RuleService {
     public Set<Rule> findByIds(List<Integer> rIds) {
         return new HashSet<>((Collection<Rule>) ruleRepository.findAllById(rIds));
     }
+
 }

@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.repository.AccidentDataRepository;
-import ru.job4j.accidents.repository.AccidentHbmCommand;
-import ru.job4j.accidents.repository.AccidentHibernate;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -28,7 +26,7 @@ public class SimpleAccidentService implements AccidentService {
 
     @Override
     public Collection<Accident> findAll() {
-        return (Collection<Accident>) accidentRepository.findAll();
+        return accidentRepository.findAll();
     }
 
     @Override

@@ -27,7 +27,9 @@ public class RegControl {
         user.setEnabled(true);
         user.setPassword(encoder.encode(user.getPassword()));
         user.setAuthority(authorities.findByAuthority("ROLE_USER"));
-        if (users.findByName(user.getUsername()).isPresent()) {
+        try {
+            users.save(user);
+        } catch (Exception e) {
             model.addAttribute("message", "Пользователь с таким именем существует");
             return "errors/404";
         }

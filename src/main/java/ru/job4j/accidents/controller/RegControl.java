@@ -7,19 +7,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.User;
 import ru.job4j.accidents.repository.AuthorityRepository;
-import ru.job4j.accidents.repository.UserRepository;
-
-import java.util.Collection;
+import ru.job4j.accidents.service.UserService;
 
 @Controller
 @AllArgsConstructor
 public class RegControl {
 
     private final PasswordEncoder encoder;
-    private final UserRepository users;
+    private final UserService users;
     private final AuthorityRepository authorities;
 
     @PostMapping("/reg")
@@ -27,13 +24,11 @@ public class RegControl {
         user.setEnabled(true);
         user.setPassword(encoder.encode(user.getPassword()));
         user.setAuthority(authorities.findByAuthority("ROLE_USER"));
-        try {
-            users.save(user);
-        } catch (Exception e) {
+        var optionalUser = users.save(user);
+        if (optionalUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с таким именем существует");
             return "errors/404";
         }
-        users.save(user);
         return "redirect:/login";
     }
 

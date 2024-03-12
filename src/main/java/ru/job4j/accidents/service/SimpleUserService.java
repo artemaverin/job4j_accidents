@@ -1,6 +1,8 @@
 package ru.job4j.accidents.service;
 
 import lombok.AllArgsConstructor;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.User;
 import ru.job4j.accidents.repository.UserRepository;
@@ -12,14 +14,16 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SimpleUserService implements UserService {
     private UserRepository userRepository;
+    private static final Logger LOG = LogManager.getLogger(SimpleUserService.class.getName());
 
     @Override
     public Optional<User> save(User user) {
-        var optionalUser = Optional.of(user);
+        Optional<User> optionalUser = Optional.empty();
         try {
             userRepository.save(user);
+            optionalUser = Optional.of(user);
         } catch (Exception e) {
-             optionalUser = Optional.empty();
+             LOG.info("Сохранение не удалось");
         }
         return optionalUser;
     }

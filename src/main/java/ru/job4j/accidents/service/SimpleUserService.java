@@ -23,7 +23,7 @@ public class SimpleUserService implements UserService {
             userRepository.save(user);
             optionalUser = Optional.of(user);
         } catch (Exception e) {
-             LOG.info("Сохранение не удалось");
+             LOG.error(e.getMessage(), e);
         }
         return optionalUser;
     }

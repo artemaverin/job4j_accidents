@@ -29,7 +29,7 @@ public class Accident {
     private AccidentType type;
 
     @ManyToMany(cascade = CascadeType.MERGE,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     @JoinTable(
             name = "accidents_rule",
             joinColumns = { @JoinColumn(name = "accident_id") },

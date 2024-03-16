@@ -89,5 +89,4 @@ class AccidentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("errors/404"));
     }
-
 }

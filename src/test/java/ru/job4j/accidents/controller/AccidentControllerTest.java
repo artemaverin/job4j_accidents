@@ -10,9 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.accidents.Main;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
-import ru.job4j.accidents.service.AccidentService;
-import ru.job4j.accidents.service.AccidentTypeService;
-import ru.job4j.accidents.service.RuleService;
+import ru.job4j.accidents.service.*;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -33,11 +31,11 @@ class AccidentControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private AccidentService accidents;
+    private SimpleAccidentService accidents;
     @MockBean
-    private AccidentTypeService types;
+    private SimpleAccidentTypeService types;
     @MockBean
-    private RuleService rules;
+    private SimpleRuleService rules;
 
     @Test
     @WithMockUser
